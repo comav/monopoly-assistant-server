@@ -30,10 +30,15 @@ var Card = function(network, number) {
 function cardNumber() {
     let generatedNumber = '9';
     let numbers = '1234567890';
-    for (let i = 0; i < 16; i++) {
-        generatedNumber += numbers.charAt(Math.floor(Math.random() * numbers.length));
-        if (i = 3) {
-            generatedNumber += ' ';
+    for (let i = 0; i < 18; i++) {
+        switch (i) {
+            case 3:
+            case 8:
+            case 13:
+                generatedNumber += ' ';
+                break;
+            default:
+                generatedNumber += numbers.charAt(Math.floor(Math.random() * numbers.length));
         }
     }
     return generatedNumber;
