@@ -74,7 +74,13 @@ app.get('/transaction', async (req, res) => {
   let amount = parseInt(req.query.amount);
 
   let senderData = await db.get("cards").find({number: sender}).value(); 
-  let receiverData = await db.get("cards").find({number: receiver}).value(); 
+  let receiverData = await db.get("cards").find({number: receiver}).value();
+
+  if (amount < 0) {
+    res.status("400");
+    res.send("Illegal operation");
+    return;
+  }
 
   if ((senderData.balance - amount) > -1) {
     let newBalance = senderData.balance - amount;
@@ -83,8 +89,10 @@ app.get('/transaction', async (req, res) => {
     res.json({
       status: "Success"
     })
+    console.log(`Moved ${amount} UAH from ${senderData.owner}'s card (${senderData.number}) to ${receiverData.owner}'s card (${receiverData.number})`);
   } else {
     res.status('400')
+    res.send('Not enough money')
   }
 })
 
