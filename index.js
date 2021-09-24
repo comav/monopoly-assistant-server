@@ -68,6 +68,26 @@ app.get('/getcardinfo', express.json(), async (req, res) => {
   
 });
 
+app.get('/transaction', async (req, res) => {
+  let sender = req.query.sender;
+  let receiver = req.query.receiver;
+  let amount = parseInt(req.query.amount);
+
+  let senderData = await db.get("cards").find({number: sender}).value(); 
+  let receiverData = await db.get("cards").find({number: receiver}).value(); 
+
+  if ((senderData.balance - amount) > -1) {
+    let newBalance = senderData.balance - amount;
+    await db.get("cards").find({number: sender}).assign({balance: newBalance}).write();
+    await db.get("cards").find({number: receiver}).assign({balance: receiverData.balance + amount}).write();
+    res.json({
+      status: "Success"
+    })
+  } else {
+    res.status('400')
+  }
+})
+
 var Card = function (network, number) {
   this.network = network;
   this.number = number;
