@@ -1,8 +1,28 @@
 {
-    "cards": [
-        {
-            "owner": "Vitaliy",
-            "number": "8800"
-        }
-    ]
+  "cards": [
+    {
+      "owner": "Vitaliy",
+      "number": "3939 3939 3939 3939",
+      "network": "ШИZA",
+      "balance": 3939
+    },
+    {
+      "owner": "Test",
+      "number": "1234 5678 9000 0000",
+      "network": "ProCard",
+      "balance": 1234
+    },
+    {
+      "owner": "John",
+      "number": "9824 8819 2619 6292",
+      "network": "ШИZA",
+      "balance": 100
+    },
+    {
+      "owner": "Player",
+      "number": "9969 9952 4240 4940",
+      "network": "ProCard",
+      "balance": 100
+    }
+  ]
 }
