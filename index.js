@@ -3,7 +3,6 @@ let express = require('express');
 let app = express();
 
 let path = require('path');
-let random = require('random');
 let RequestIp = require('@supercharge/request-ip');
 let bodyParser = require('body-parser');
 
@@ -27,16 +26,15 @@ app.get('/newcard', async (req, res) => {
       owner: username,
       number: cardNumber(),
       network: cardNetwork(),
-      balance: 100
+      balance: 100,
+      design: random(0, 4)
     }
     db.get("cards").push(card).write();
     res.status('200');
     res.json({
       status: 200
     })
-
   } else {
-    
     res.status('403');
     res.json({
       status: 403
@@ -52,7 +50,8 @@ app.get('/getcardinfo', express.json(), async (req, res) => {
     res.json({
       number: user.number,
       network: user.network,
-      balance: user.balance
+      balance: user.balance,
+      design: user.design
     })
     // let cardNetworks = ['ProCard', 'ШИZA'];
     // let card = new Card(cardNetworks[Math.floor(Math.random() * cardNetworks.length)], cardNumber());
@@ -122,6 +121,13 @@ function cardNetwork() {
   let networks = ['ProCard', 'ШИZA'];
   return networks[Math.floor(Math.random() * networks.length)];
 }
+
+function random(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
 
 app.listen(5502, () => {
   console.log(`App is started on port 5502`);
