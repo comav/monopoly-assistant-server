@@ -4,14 +4,14 @@
       "owner": "Vitaliy",
       "number": "3939 3939 3939 3939",
       "network": "ШИZA",
-      "balance": 11028,
+      "balance": 10900,
       "design": 3
     },
     {
       "owner": "Test",
       "number": "1234 5678 9000 0000",
       "network": "ProCard",
-      "balance": 1234,
+      "balance": 317,
       "design": 0
     },
     {
@@ -25,43 +25,15 @@
       "owner": "Player",
       "number": "9969 9952 4240 4940",
       "network": "ProCard",
-      "balance": 100,
+      "balance": 145,
       "design": 2
     },
     {
-      "owner": "Somebody",
-      "number": "9743 4279 8979 4669",
+      "owner": "Geddan",
+      "number": "9741 6722 5690 7202",
       "network": "ProCard",
-      "balance": 100,
+      "balance": 1100,
       "design": 4
-    },
-    {
-      "owner": "Player02",
-      "number": "9656 5175 2437 5089",
-      "network": "ШИZA",
-      "balance": 100,
-      "design": 0
-    },
-    {
-      "owner": "Player020",
-      "number": "9603 2710 2632 6287",
-      "network": "ProCard",
-      "balance": 100,
-      "design": 1
-    },
-    {
-      "owner": "Player0200",
-      "number": "9823 5285 4868 6975",
-      "network": "ШИZA",
-      "balance": 100,
-      "design": 4
-    },
-    {
-      "owner": "Player020000",
-      "number": "9982 2533 0362 4054",
-      "network": "ProCard",
-      "balance": 100,
-      "design": 3
     }
   ]
 }

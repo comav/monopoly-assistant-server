@@ -75,6 +75,10 @@ app.get('/transaction', async (req, res) => {
   let senderData = await db.get("cards").find({number: sender}).value(); 
   let receiverData = await db.get("cards").find({number: receiver}).value();
 
+  console.log(sender);
+  console.log(receiver);
+  console.log(amount);
+
   if (amount < 0) {
     res.status("400");
     res.send("Illegal operation");
@@ -93,6 +97,21 @@ app.get('/transaction', async (req, res) => {
     res.status('400')
     res.send('Not enough money')
   }
+})
+
+app.get('/getuserlist', async (req, res) => {
+  let userlistDB = await db.get("cards").value();
+  console.log(userlistDB);
+  let userlist = [];
+  for (let i = 0; i < userlistDB.length; i++) {
+    console.lo
+    let user = {
+      label: userlistDB[i].owner,
+      value: userlistDB[i].number
+    }
+    userlist.push(user);
+  }
+  res.json(userlist);
 })
 
 var Card = function (network, number) {
