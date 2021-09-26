@@ -4,7 +4,7 @@
       "owner": "Vitaliy",
       "number": "3939 3939 3939 3939",
       "network": "ШИZA",
-      "balance": 10900,
+      "balance": 9999980899,
       "design": 3
     },
     {
@@ -25,15 +25,29 @@
       "owner": "Player",
       "number": "9969 9952 4240 4940",
       "network": "ProCard",
-      "balance": 145,
+      "balance": 20145,
       "design": 2
     },
     {
       "owner": "Geddan",
       "number": "9741 6722 5690 7202",
       "network": "ProCard",
-      "balance": 1100,
+      "balance": 2000,
       "design": 4
+    },
+    {
+      "owner": "Testificate",
+      "number": "9225 8130 1966 0713",
+      "network": "ШИZA",
+      "balance": 100,
+      "design": 4
+    },
+    {
+      "owner": "Player8",
+      "number": "9755 2490 5411 0526",
+      "network": "ШИZA",
+      "balance": 100,
+      "design": 1
     }
   ]
 }

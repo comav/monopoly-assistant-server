@@ -5,11 +5,13 @@ let app = express();
 let path = require('path');
 let RequestIp = require('@supercharge/request-ip');
 let bodyParser = require('body-parser');
+let cors = require('cors');
 
 //app.use(bodyParser);
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cors());
 
 let lowdb = require('lowdb');
 let FileSync = require('lowdb/adapters/FileSync');
@@ -97,6 +99,25 @@ app.get('/transaction', async (req, res) => {
     res.status('400')
     res.send('Not enough money')
   }
+})
+
+app.get('/banktransaction', async (req, res) => {
+  let receiver = req.query.receiver;
+  let amount = parseInt(req.query.amount);
+
+  let receiverData = await db.get("cards").find({number: receiver}).value();
+
+  if (amount < 0) {
+    res.status("400");
+    res.send("Illegal operation");
+    return;
+  }
+
+  await db.get("cards").find({number: receiver}).assign({balance: receiverData.balance + amount}).write();
+    res.json({
+      status: "Success"
+    })
+    console.log(`Moved ${amount} UAH from bank to ${receiverData.owner}'s card (${receiverData.number})`);
 })
 
 app.get('/getuserlist', async (req, res) => {
