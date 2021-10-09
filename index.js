@@ -29,7 +29,7 @@ app.get('/newcard', async (req, res) => {
       number: cardNumber(),
       network: cardNetwork(),
       balance: 100,
-      design: random(0, 4)
+      design: random(0, 5)
     }
     db.get("cards").push(card).write();
     res.status('200');
@@ -53,18 +53,14 @@ app.get('/getcardinfo', express.json(), async (req, res) => {
       number: user.number,
       network: user.network,
       balance: user.balance,
-      design: user.design
+      design: user.design,
+      status: 200
     })
-    // let cardNetworks = ['ProCard', 'ШИZA'];
-    // let card = new Card(cardNetworks[Math.floor(Math.random() * cardNetworks.length)], cardNumber());
-    // console.log(card);
-    // res.json(card);
   } else {
-    // let card = new Card(user.network, user.number);
-    // console.log("An existing card was found & sent: " + card);
-    // res.json(card);
     res.status(400);
-    res.send("Theres no card for provided owner");
+    res.json({
+      status: 400
+    })
   }
   
 });
