@@ -5,11 +5,13 @@ let app = express();
 let path = require('path');
 let RequestIp = require('@supercharge/request-ip');
 let bodyParser = require('body-parser');
+let cors = require('cors');
 
 //app.use(bodyParser);
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cors());
 
 let lowdb = require('lowdb');
 let FileSync = require('lowdb/adapters/FileSync');
@@ -27,7 +29,7 @@ app.get('/newcard', async (req, res) => {
       number: cardNumber(),
       network: cardNetwork(),
       balance: 100,
-      design: random(0, 4)
+      design: random(0, 5)
     }
     db.get("cards").push(card).write();
     res.status('200');
@@ -51,18 +53,14 @@ app.get('/getcardinfo', express.json(), async (req, res) => {
       number: user.number,
       network: user.network,
       balance: user.balance,
-      design: user.design
+      design: user.design,
+      status: 200
     })
-    // let cardNetworks = ['ProCard', 'ШИZA'];
-    // let card = new Card(cardNetworks[Math.floor(Math.random() * cardNetworks.length)], cardNumber());
-    // console.log(card);
-    // res.json(card);
   } else {
-    // let card = new Card(user.network, user.number);
-    // console.log("An existing card was found & sent: " + card);
-    // res.json(card);
     res.status(400);
-    res.send("Theres no card for provided owner");
+    res.json({
+      status: 400
+    })
   }
   
 });
@@ -97,6 +95,25 @@ app.get('/transaction', async (req, res) => {
     res.status('400')
     res.send('Not enough money')
   }
+})
+
+app.get('/banktransaction', async (req, res) => {
+  let receiver = req.query.receiver;
+  let amount = parseInt(req.query.amount);
+
+  let receiverData = await db.get("cards").find({number: receiver}).value();
+
+  if (amount < 0) {
+    res.status("400");
+    res.send("Illegal operation");
+    return;
+  }
+
+  await db.get("cards").find({number: receiver}).assign({balance: receiverData.balance + amount}).write();
+    res.json({
+      status: "Success"
+    })
+    console.log(`Moved ${amount} UAH from bank to ${receiverData.owner}'s card (${receiverData.number})`);
 })
 
 app.get('/getuserlist', async (req, res) => {
