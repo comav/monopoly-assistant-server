@@ -2,12 +2,8 @@ let express = require('express');
 
 let app = express();
 
-let path = require('path');
-let RequestIp = require('@supercharge/request-ip');
-let bodyParser = require('body-parser');
 let cors = require('cors');
-
-//app.use(bodyParser);
+let qrcode = require('qrcode');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -155,7 +151,7 @@ app.get('/buyproperty', async (req, res) => {
 
   console.log(`Received a request to buy property: ${cardID}`);
 
-  if (buyerData.balance > cardData.price || buyerData.balance == cardData.price) {
+  if (buyerData.balance > cardData.price || buyerData.balance === cardData.price) {
     db.get("propertyData").find({ name: cardID }).assign({ owner: buyerData.owner }).write();
     res.send(`Selled ${cardID} to ${buyer}, owner: ${buyerData.owner}`);
   }
@@ -181,6 +177,21 @@ app.get('/changedesign', async (req, res) => {
   await db.get("cards").find({owner:req.query.user}).assign({design:designNumber}).write();
   console.log('Success');
   res.send('Success');
+})
+
+//other get requests
+
+app.get('/generateqr', async (req, res) => {
+  let propertyName = req.query.property;
+  let propertyData = await db.get("propertyData").find({name: propertyName}).value();
+  let qrMessage = {
+    name: propertyName
+  }
+  if (propertyData.owner === "") {
+    qrcode.toString(propertyName, {type: 'terminal'}, (err, url) => {
+      console.log(url);
+    })
+  }
 })
 
 var Card = function (network, number) {
