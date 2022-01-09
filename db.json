@@ -1,60 +1,189 @@
 {
   "cards": [
     {
-      "owner": "Vitaliy",
+      "owner": "Player",
       "number": "3939 3939 3939 3939",
       "network": "ProCard",
-      "balance": 9999981999,
-      "design": 3
-    },
-    {
-      "owner": "Test",
-      "number": "1234 5678 9000 0000",
-      "network": "ProCard",
-      "balance": 317,
-      "design": 0
-    },
-    {
-      "owner": "John",
-      "number": "9824 8819 2619 6292",
-      "network": "ШИZA",
-      "balance": 98972,
-      "design": 1
-    },
-    {
-      "owner": "Player",
-      "number": "9567 9194 0104 6891",
-      "network": "ProCard",
-      "balance": 100,
-      "design": 5
-    },
-    {
-      "owner": "OwO",
-      "number": "9470 5030 9730 3933",
-      "network": "ШИZA",
-      "balance": 100,
-      "design": 1
-    },
-    {
-      "owner": "Qqq",
-      "number": "9135 9519 6752 7607",
-      "network": "ProCard",
-      "balance": 100,
-      "design": 4
-    },
-    {
-      "owner": "Player333",
-      "number": "9489 1065 1033 8354",
-      "network": "ProCard",
-      "balance": 100,
+      "balance": 9999976482,
       "design": 2
     },
     {
-      "owner": "Player8",
-      "number": "9001 6914 9922 3488",
+      "owner": "sus_chel",
+      "number": "9511 7206 3903 4729",
       "network": "ProCard",
+      "balance": 5617,
+      "design": 3
+    },
+    {
+      "owner": "John",
+      "number": "9953 6445 2278 1134",
+      "network": "ШИZA",
       "balance": 100,
-      "design": 1
+      "design": 5
+    }
+  ],
+  "propertyData": [
+    {
+      "name": "Пшениця",
+      "rent": 20,
+      "color": "#92623a",
+      "price": 200,
+      "mortgage": 100,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        70,
+        200,
+        550,
+        750,
+        950
+      ],
+      "key": "1.1",
+      "homes": 0,
+      "owner": "Player"
+    },
+    {
+      "name": "Кукурудза",
+      "rent": 20,
+      "color": "#92623a",
+      "price": 200,
+      "mortgage": 100,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        70,
+        200,
+        550,
+        750,
+        950
+      ],
+      "key": "1.2",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Картопля",
+      "rent": 30,
+      "color": "#92623a",
+      "price": 200,
+      "mortgage": 100,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        80,
+        220,
+        600,
+        800,
+        1000
+      ],
+      "key": "1.3",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Качатник",
+      "rent": 20,
+      "color": "#ffda00",
+      "price": 60,
+      "mortgage": 30,
+      "upgrade-price": 50,
+      "upgrade-rent": [
+        30,
+        40,
+        110,
+        160,
+        250
+      ],
+      "key": "2.1",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Курятник",
+      "rent": 10,
+      "color": "#ffda00",
+      "price": 50,
+      "mortgage": 20,
+      "upgrade-price": 50,
+      "upgrade-rent": [
+        20,
+        30,
+        100,
+        150,
+        250
+      ],
+      "key": "2.2",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Свинарник",
+      "rent": 20,
+      "color": "red",
+      "price": 150,
+      "mortgage": 70,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        50,
+        150,
+        450,
+        620,
+        750
+      ],
+      "key": "3.1",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Кролятник",
+      "rent": 20,
+      "color": "red",
+      "price": 150,
+      "mortgage": 70,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        50,
+        150,
+        450,
+        620,
+        750
+      ],
+      "key": "3.2",
+      "homes": 0,
+      "owner": "John"
+    },
+    {
+      "name": "Вівчарня",
+      "rent": 30,
+      "color": "red",
+      "price": 150,
+      "mortgage": 90,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        60,
+        180,
+        500,
+        700,
+        900
+      ],
+      "key": "3.3",
+      "homes": 0,
+      "owner": "Player"
+    },
+    {
+      "name": "Рада",
+      "rent": 30,
+      "color": "black",
+      "price": 150,
+      "mortgage": 90,
+      "upgrade-price": 100,
+      "upgrade-rent": [
+        60,
+        180,
+        500,
+        700,
+        900
+      ],
+      "key": "3.3",
+      "homes": 0,
+      "owner": "John"
     }
   ]
 }

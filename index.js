@@ -10,7 +10,7 @@ let cors = require('cors');
 //app.use(bodyParser);
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 let lowdb = require('lowdb');
@@ -18,10 +18,19 @@ let FileSync = require('lowdb/adapters/FileSync');
 let adapter = new FileSync('db.json');
 let db = lowdb(adapter);
 
+// Database events docs
+// Event {
+//  eventTime: current time
+//  eventType: newCard || transaction || bankTransaction || getCardData
+//  eventInfo: additional info
+// }
+//
+// Every Event child is a string
+
 app.get('/newcard', async (req, res) => {
   let username = req.query.owner;
   console.log(username);
-  let cardDB = await db.get("cards").find({owner: username}).value();
+  let cardDB = await db.get("cards").find({ owner: username }).value();
   console.log(cardDB);
   if (!cardDB) {
     let card = {
@@ -36,6 +45,12 @@ app.get('/newcard', async (req, res) => {
     res.json({
       status: 200
     })
+    let event = {
+      eventTime: getCurrentTime(),
+      eventType: 'newCard',
+      eventInfo: card.owner
+    }
+    db.get("events").push(event).write();
   } else {
     res.status('403');
     res.json({
@@ -46,7 +61,7 @@ app.get('/newcard', async (req, res) => {
 
 app.get('/getcardinfo', express.json(), async (req, res) => {
   console.log(req.query);
-  let user = await db.get("cards").find({owner: req.query.owner}).value();
+  let user = await db.get("cards").find({ owner: req.query.owner }).value();
   console.log(2, user);
   if (user) {
     res.json({
@@ -62,7 +77,7 @@ app.get('/getcardinfo', express.json(), async (req, res) => {
       status: 400
     })
   }
-  
+
 });
 
 app.get('/transaction', async (req, res) => {
@@ -70,8 +85,8 @@ app.get('/transaction', async (req, res) => {
   let receiver = req.query.receiver;
   let amount = parseInt(req.query.amount);
 
-  let senderData = await db.get("cards").find({number: sender}).value(); 
-  let receiverData = await db.get("cards").find({number: receiver}).value();
+  let senderData = await db.get("cards").find({ number: sender }).value();
+  let receiverData = await db.get("cards").find({ number: receiver }).value();
 
   console.log(sender);
   console.log(receiver);
@@ -85,8 +100,8 @@ app.get('/transaction', async (req, res) => {
 
   if ((senderData.balance - amount) > -1) {
     let newBalance = senderData.balance - amount;
-    await db.get("cards").find({number: sender}).assign({balance: newBalance}).write();
-    await db.get("cards").find({number: receiver}).assign({balance: receiverData.balance + amount}).write();
+    await db.get("cards").find({ number: sender }).assign({ balance: newBalance }).write();
+    await db.get("cards").find({ number: receiver }).assign({ balance: receiverData.balance + amount }).write();
     res.json({
       status: "Success"
     })
@@ -101,7 +116,7 @@ app.get('/banktransaction', async (req, res) => {
   let receiver = req.query.receiver;
   let amount = parseInt(req.query.amount);
 
-  let receiverData = await db.get("cards").find({number: receiver}).value();
+  let receiverData = await db.get("cards").find({ number: receiver }).value();
 
   if (amount < 0) {
     res.status("400");
@@ -109,26 +124,63 @@ app.get('/banktransaction', async (req, res) => {
     return;
   }
 
-  await db.get("cards").find({number: receiver}).assign({balance: receiverData.balance + amount}).write();
-    res.json({
-      status: "Success"
-    })
-    console.log(`Moved ${amount} UAH from bank to ${receiverData.owner}'s card (${receiverData.number})`);
-})
+  await db.get("cards").find({ number: receiver }).assign({ balance: receiverData.balance + amount }).write();
+  res.json({
+    status: "Success"
+  })
+  console.log(`Moved ${amount} UAH from bank to ${receiverData.owner}'s card (${receiverData.number})`);
+}
+)
 
 app.get('/getuserlist', async (req, res) => {
   let userlistDB = await db.get("cards").value();
   console.log(userlistDB);
   let userlist = [];
   for (let i = 0; i < userlistDB.length; i++) {
-    console.lo
     let user = {
       label: userlistDB[i].owner,
       value: userlistDB[i].number
     }
     userlist.push(user);
   }
+  console.log(userlist);
   res.json(userlist);
+})
+
+app.get('/buyproperty', async (req, res) => {
+  let cardID = req.query.propid;
+  let buyer = req.query.buyer;
+  let cardData = await db.get("propertyData").find({ name: cardID }).value();
+  let buyerData = await db.get("cards").find({ owner: buyer }).value();
+
+  console.log(`Received a request to buy property: ${cardID}`);
+
+  if (buyerData.balance > cardData.price || buyerData.balance == cardData.price) {
+    db.get("propertyData").find({ name: cardID }).assign({ owner: buyerData.owner }).write();
+    res.send(`Selled ${cardID} to ${buyer}, owner: ${buyerData.owner}`);
+  }
+})
+
+app.get('/getpropertyownagedata', (req, res) => {
+  let propertyData = db.get("propertyData").value();
+  let response = [];
+  for (i = 0; i < propertyData.length; i++) {
+    let responseItem = {
+      name: propertyData[i].name,
+      owner: propertyData[i].owner,
+      homes: propertyData[i].homes
+    }
+    response.push(responseItem);
+  }
+  console.log(response);
+  res.send(response);
+})
+
+app.get('/changedesign', async (req, res) => {
+  let designNumber = Number(req.query.design);
+  await db.get("cards").find({owner:req.query.user}).assign({design:designNumber}).write();
+  console.log('Success');
+  res.send('Success');
 })
 
 var Card = function (network, number) {
@@ -164,6 +216,11 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
+function getCurrentTime() {
+  let today = new Date();
+  let currTime = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+  return currTime;
+}
 
 app.listen(5502, () => {
   console.log(`App is started on port 5502`);
