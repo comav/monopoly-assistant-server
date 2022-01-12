@@ -4,6 +4,13 @@ let app = express();
 
 let cors = require('cors');
 let qrcode = require('qrcode');
+let https = require('https');
+let fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -80,6 +87,8 @@ app.get('/transaction', async (req, res) => {
   let sender = req.query.sender;
   let receiver = req.query.receiver;
   let amount = parseInt(req.query.amount);
+
+  console.log(sender, receiver, amount);
 
   let senderData = await db.get("cards").find({ number: sender }).value();
   let receiverData = await db.get("cards").find({ number: receiver }).value();
@@ -203,7 +212,7 @@ function cardNumber() {
   let generatedNumber = '9';
   let numbers = '1234567890';
   for (let i = 0; i < 18; i++) {
-    switch (i) {
+      switch (i) {
       case 3:
       case 8:
       case 13:
@@ -233,6 +242,4 @@ function getCurrentTime() {
   return currTime;
 }
 
-app.listen(5502, () => {
-  console.log(`App is started on port 5502`);
-});
+https.createServer(options, app).listen(5502);
